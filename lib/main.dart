@@ -43,6 +43,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double tsize = 20;
   var top = 50.0;
   var left = 50.0;
+  var ttext = "Drag Me";
+  TextEditingController emailController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +60,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Stack(
                 fit: StackFit.expand,
                 children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(13.0),
-                    child: const Image(
-                      image: AssetImage('assets/wallpaper.jpg'),
-                      fit: BoxFit.cover,
+                  GestureDetector(
+                    onTap: () {
+                      entertext(context);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(13.0),
+                      child: const Image(
+                        image: AssetImage('assets/wallpaper.jpg'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -75,6 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   GestureDetector(
+                    onTap: () {
+                      print("hh");
+                      entertext(context);
+                    },
                     child: Stack(
                       children: <Widget>[
                         Positioned(
@@ -92,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               //   ),
                               // ),
                               Text(
-                            "Drag Me",
+                            emailController.text,
                             style: TextStyle(
                               fontSize: tsize,
                               color: Colors.lightBlueAccent,
@@ -151,6 +162,36 @@ class _MyHomePageState extends State<MyHomePage> {
               buildColorPicker(),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'SELECT',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ]),
+          ));
+
+  Widget buildtext() => TextField(
+        controller: emailController,
+        style: TextStyle(color: Colors.blue, fontSize: tsize),
+        onChanged: (text) {
+          print('First text field: $text');
+          setState(
+            () => this.emailController = emailController,
+          );
+        },
+      );
+
+  void entertext(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: const Text('Enter Text'),
+            content:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              buildtext(),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
                 child: Text(
                   'SELECT',
                   style: TextStyle(fontSize: 20),
